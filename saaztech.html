@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Math Solver AI</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #001f3f, #0074D9);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      background: #111;
+      padding: 2rem;
+      border-radius: 15px;
+      box-shadow: 0 0 30px rgba(0,255,255,0.3);
+      width: 90%;
+      max-width: 500px;
+      text-align: center;
+    }
+
+    input {
+      width: 80%;
+      padding: 0.7rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 8px;
+      margin: 1rem 0;
+    }
+
+    button {
+      padding: 0.7rem 1.5rem;
+      font-size: 1rem;
+      background: #00ffee;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: #00ccbb;
+    }
+
+    #output {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      color: #00ffcc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>📐 Math Solver AI</h1>
+    <input type="text" id="input" placeholder="Enter equation e.g. 2x+4=10" />
+    <button onclick="solveMath()">Solve</button>
+    <div id="output"></div>
+  </div>
+
+  <script>
+    function solveMath() {
+      const input = document.getElementById("input").value;
+      const output = document.getElementById("output");
+
+      try {
+        // Handle arithmetic only
+        if (!input.includes("x") && !input.includes("=")) {
+          const result = eval(input);
+          output.innerHTML = `Answer: <strong>${result}</strong>`;
+          return;
+        }
+
+        // Handle linear equations like 2x+4=10
+        let [lhs, rhs] = input.split("=");
+        lhs = lhs.replace(/\s/g, '');
+        rhs = rhs.replace(/\s/g, '');
+
+        const coeffMatch = lhs.match(/^(-?\d*)x([+-]?\d+)?$/);
+
+        if (coeffMatch) {
+          const a = parseFloat(coeffMatch[1] || "1");
+          const b = parseFloat(coeffMatch[2] || "0");
+          const c = parseFloat(rhs);
+          const x = (c - b) / a;
+          output.innerHTML = `x = <strong>${x}</strong>`;
+        } else {
+          output.innerHTML = "❌ Sorry, I can only solve basic linear equations like: 2x+4=10";
+        }
+      } catch (e) {
+        output.innerHTML = "❌ Invalid input or unsupported equation.";
+      }
+    }
+  </script>
+
+</body>
+</html>
